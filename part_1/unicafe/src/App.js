@@ -6,7 +6,7 @@ const Button = (props) => (
   </button>
 )
 
-const Display = props => <div>{props.name} {props.value}</div>
+const Display = props => <div>{props.name} {props.value} {props.precentage}</div>
 
 const App = () => {
   // tallenna napit omaan tilaansa
@@ -36,6 +36,9 @@ const App = () => {
       <Display name="good" value={good} />
       <Display name="neutral" value={neutral} />
       <Display name="bad" value={bad} />
+      <Display name="all" value={good + neutral + bad} />
+      <Display name="avarage" value={(good + neutral + bad) / 3} />
+      <Display name="positive" value={good / (good + neutral + bad) * 100} precentage="%"/>
     </div>
   )
 }

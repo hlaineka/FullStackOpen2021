@@ -6,7 +6,7 @@ const Button = (props) => (
   </button>
 )
 
-const Display = props => <div>{props.name} {props.value} {props.precentage}</div>
+const StatisticLine = props => <div>{props.name} {props.value} {props.precentage}</div>
 
 const Statistics = ({good, neutral, bad}) => {  
   if (good === 0 && neutral === 0 && bad === 0)
@@ -18,12 +18,12 @@ const Statistics = ({good, neutral, bad}) => {
   return (
     <div>
       <h1>statistics</h1>
-      <Display name="good" value={good} />
-      <Display name="neutral" value={neutral} />
-      <Display name="bad" value={bad} />
-      <Display name="all" value={good + neutral + bad} />
-      <Display name="avarage" value={(good + neutral + bad) / 3} />
-      <Display name="positive" value={good / (good + neutral + bad) * 100} precentage="%"/>
+      <StatisticLine name="good" value={good} />
+      <StatisticLine name="neutral" value={neutral} />
+      <StatisticLine name="bad" value={bad} />
+      <StatisticLine name="all" value={good + neutral + bad} />
+      <StatisticLine name="avarage" value={(good + neutral + bad) / 3} />
+      <StatisticLine name="positive" value={good / (good + neutral + bad) * 100} precentage="%"/>
     </div>
   )
 }

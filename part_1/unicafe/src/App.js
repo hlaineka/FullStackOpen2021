@@ -8,6 +8,20 @@ const Button = (props) => (
 
 const Display = props => <div>{props.name} {props.value} {props.precentage}</div>
 
+const Statistics = ({good, neutral, bad}) => {  
+  return (
+    <div>
+      <h1>statistics</h1>
+      <Display name="good" value={good} />
+      <Display name="neutral" value={neutral} />
+      <Display name="bad" value={bad} />
+      <Display name="all" value={good + neutral + bad} />
+      <Display name="avarage" value={(good + neutral + bad) / 3} />
+      <Display name="positive" value={good / (good + neutral + bad) * 100} precentage="%"/>
+    </div>
+  )
+}
+
 const App = () => {
   // tallenna napit omaan tilaansa
   const [good, setGood] = useState(0)
@@ -32,13 +46,7 @@ const App = () => {
       <Button handleClick={() => setToGood(good + 1)} text="good" />
       <Button handleClick={() => setToNeutral(neutral + 1)} text="neutral" />
       <Button handleClick={() => setToBad(bad + 1)} text="bad" />
-      <h1>statistics</h1>
-      <Display name="good" value={good} />
-      <Display name="neutral" value={neutral} />
-      <Display name="bad" value={bad} />
-      <Display name="all" value={good + neutral + bad} />
-      <Display name="avarage" value={(good + neutral + bad) / 3} />
-      <Display name="positive" value={good / (good + neutral + bad) * 100} precentage="%"/>
+      <Statistics good={good} neutral={neutral} bad={bad} />
     </div>
   )
 }

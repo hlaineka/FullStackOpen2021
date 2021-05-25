@@ -14,24 +14,20 @@ const Part = (props) => {
   )
 }
 
-const Content = (props) => {
-  return (
-    props.parts.map((part) => {
-      console.log(part)
-      console.log("course" + props.id + "part" + part.id)
-      return (
+const Content = (props) => (
+    props.parts.map((part) => (
       <Part part={part.name} exercises={part.exercises} key={"course" + props.id + "part" + part.id}/>)
-    })
+    )
   )
-}
 
 const Total = (props) => {
   let total = 0
   props.parts.map(part => {
     total += part.exercises
+    return(total)
   })
   return (
-    <p>Number of exercises {total}</p>
+    <p>Total of {total} exersices</p>
   )
 }
 

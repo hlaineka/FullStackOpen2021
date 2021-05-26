@@ -20,10 +20,15 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName,
+    if (-1 === persons.findIndex(obj => obj.name === newName)){
+      const personObject = {
+        name: newName,
+      }
+      setPersons(persons.concat(personObject))
     }
-    setPersons(persons.concat(personObject))
+    else {
+      window.alert(`${newName} is already added to phonebook`)
+    }
     setNewName('')
   }
 

@@ -4,6 +4,7 @@
 /part_1/kurssitiedot/node_modules/
 /part_1/unicafe/node_modules/
 /part_1/anekdootit/node_modules/
+/node_modules
 /.pnp
 .pnp.js
 

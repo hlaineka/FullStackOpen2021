@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const PersonsToShow = (persons, filter) => (
-  persons.filter(obj => obj.name.toLowerCase().includes(filter.toLowerCase())))
+const PersonsToShow = (persons, filterstr) => (
+  persons.filter(obj => obj.name.toLowerCase().includes(filterstr.toLowerCase())))
 
 const Person = ({person}) => (
     <p>{person.name} {person.number}</p>)
 
-const NumberList = ({persons, filter}) => (
-    PersonsToShow(persons, filter).map((person) => (
+const NumberList = ({persons, filterstr}) => (
+    PersonsToShow(persons, filterstr).map((person) => (
       <Person person={person} key={person.name}/>
     )))
 
@@ -26,15 +27,18 @@ const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumb
 )
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ])
+  const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setFilter ] = useState('')
+
+  useEffect(() => {
+    axios
+    .get('http://localhost:3001/db')
+    .then(response => {
+      setPersons(response.data.persons)
+    })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -72,7 +76,7 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <NumberList persons={persons} filter={newFilter} />
+      <NumberList persons={persons} filterstr={newFilter} />
     </div>
   )
 

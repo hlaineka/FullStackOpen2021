@@ -35,12 +35,22 @@ const Notification = ({message}) => {
   <div className="info box">{message}</div>)
 }
 
+const Error = ({message}) => {
+  if (message === null) {
+    return null
+  }
+  return (
+    <div className="error box">{message}</div>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setFilter ] = useState('')
   const [ infoMessage, setInfoMessage ] = useState(null)
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -98,6 +108,13 @@ const App = () => {
               setInfoMessage(null)
             }, 5000)
           })
+          .catch(error => {
+            setErrorMessage(`Information of ${toDelete.name} has already been removed from server`)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+            setPersons(persons.filter(n => n.id !== id))
+          })
     }
   }
 
@@ -116,6 +133,7 @@ const App = () => {
   return (
     <div>
       <Notification message={infoMessage}/>
+      <Error message={errorMessage}/>
       <h1>Phonebook</h1>
       <FilterForm newFilter={newFilter} handleFilter={handleFilter}/>
       <h2>add a new</h2>

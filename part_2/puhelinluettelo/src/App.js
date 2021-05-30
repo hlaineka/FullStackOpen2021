@@ -4,12 +4,12 @@ import phonebookService from './services/phonebook'
 const PersonsToShow = (persons, filterstr) => (
   persons.filter(obj => obj.name.toLowerCase().includes(filterstr.toLowerCase())))
 
-const Person = ({person}) => (
-    <p>{person.name} {person.number}</p>)
+const Person = ({person, delPerson}) => (
+    <p>{person.name} {person.number} <button onClick={(event) => delPerson(event, person.id)}>delete</button></p>)
 
-const NumberList = ({persons, filterstr}) => (
+const NumberList = ({persons, filterstr, delPerson}) => (
     PersonsToShow(persons, filterstr).map((person) => (
-      <Person person={person} key={person.name}/>
+      <Person person={person} delPerson={delPerson} key={person.name}/>
     )))
 
 const FilterForm = ({newFilter, handleFilter}) => (
@@ -48,7 +48,7 @@ const App = () => {
         number: newNumber,
       }
       phonebookService
-        .create(personObject)
+        .createPerson(personObject)
           .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
         })
@@ -59,6 +59,18 @@ const App = () => {
     setNewName('')
     setNewNumber('')
     setFilter('')
+  }
+
+  const delPerson = (event, id) => {
+    event.preventDefault()
+    const toDelete = persons.find((obj) => obj.id===id)
+    console.log("trying to delete id " + id + " info: " , toDelete)
+    if (window.confirm("Delete " + toDelete.name)){
+      console.log("delete" + toDelete.name)
+      phonebookService
+        .deletePerson(toDelete.id)
+          .then(phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
+    }
   }
 
   const handleNameChange = (event) => {
@@ -80,10 +92,9 @@ const App = () => {
       <h2>add a new</h2>
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <NumberList persons={persons} filterstr={newFilter} />
+      <NumberList persons={persons} filterstr={newFilter} delPerson={delPerson}/>
     </div>
   )
-
 }
 
 export default App

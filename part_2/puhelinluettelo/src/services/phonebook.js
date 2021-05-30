@@ -16,10 +16,16 @@ const deletePerson = PersonId => {
 	return request.then(response => response.data)
 }
 
+const updatePerson = updatedObject => {
+	const request = axios.put(baseUrl+updatedObject.id, updatedObject)
+	return request.then(response => response.data)
+}
+
 const phonebook = {
 	getAll,
 	createPerson,
-	deletePerson
+	deletePerson,
+	updatePerson
 }
 
 export default phonebook;

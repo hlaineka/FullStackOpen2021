@@ -53,8 +53,14 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
         })
     }
-    else {
-      window.alert(`${newName} is already added to phonebook`)
+    else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+      console.log("replace number of " + newName)
+      const updatePerson = persons.find(obj => obj.name === newName)
+      console.log(updatePerson)
+      const updatedPerson = {...updatePerson, number: newNumber}
+      phonebookService
+        .updatePerson(updatedPerson)
+          .then(() => phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
     }
     setNewName('')
     setNewNumber('')
@@ -69,7 +75,7 @@ const App = () => {
       console.log("delete" + toDelete.name)
       phonebookService
         .deletePerson(toDelete.id)
-          .then(phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
+          .then(() => phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
     }
   }
 

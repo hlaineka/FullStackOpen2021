@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import phonebookService from './services/phonebook'
+import './index.css'
 
 const PersonsToShow = (persons, filterstr) => (
   persons.filter(obj => obj.name.toLowerCase().includes(filterstr.toLowerCase())))
@@ -26,11 +27,20 @@ const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumb
   </form>
 )
 
+const Notification = ({message}) => {
+  if (message === null) {
+    return null
+  }
+  return (
+  <div className="info box">{message}</div>)
+}
+
 const App = () => {
   const [ persons, setPersons] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ newFilter, setFilter ] = useState('')
+  const [ infoMessage, setInfoMessage ] = useState(null)
 
   useEffect(() => {
     phonebookService
@@ -51,16 +61,24 @@ const App = () => {
         .createPerson(personObject)
           .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
+          setInfoMessage(`${newName} added to phonebook`)
+          setTimeout(() => {
+            setInfoMessage(null)
+          }, 5000)
         })
     }
     else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
-      console.log("replace number of " + newName)
       const updatePerson = persons.find(obj => obj.name === newName)
-      console.log(updatePerson)
       const updatedPerson = {...updatePerson, number: newNumber}
       phonebookService
         .updatePerson(updatedPerson)
-          .then(() => phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
+          .then(() => {
+            phonebookService.getAll().then(newPersons => {setPersons(newPersons)})
+            setInfoMessage(`${newName}'s number updated`)
+            setTimeout(() => {
+              setInfoMessage(null)
+            }, 5000)
+          })
     }
     setNewName('')
     setNewNumber('')
@@ -70,12 +88,16 @@ const App = () => {
   const delPerson = (event, id) => {
     event.preventDefault()
     const toDelete = persons.find((obj) => obj.id===id)
-    console.log("trying to delete id " + id + " info: " , toDelete)
     if (window.confirm("Delete " + toDelete.name)){
-      console.log("delete" + toDelete.name)
       phonebookService
         .deletePerson(toDelete.id)
-          .then(() => phonebookService.getAll().then(newPersons => {setPersons(newPersons)}))
+          .then(() => {
+            phonebookService.getAll().then(newPersons => {setPersons(newPersons)})
+            setInfoMessage(`${toDelete.name} deleted`)
+            setTimeout(() => {
+              setInfoMessage(null)
+            }, 5000)
+          })
     }
   }
 
@@ -93,6 +115,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={infoMessage}/>
       <h1>Phonebook</h1>
       <FilterForm newFilter={newFilter} handleFilter={handleFilter}/>
       <h2>add a new</h2>

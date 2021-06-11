@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs/ HTTP/1.1
+content-type: application/json
+
+{
+	"title": "Making REST calls from VSCode",
+  "author": "Praveen Chamarthi",
+  "url": "https://www.praveenc.com/posts/vscode-rest-client-extension/",
+  "likes": 9
+}

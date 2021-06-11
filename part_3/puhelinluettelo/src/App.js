@@ -74,9 +74,14 @@ const App = () => {
           setInfoMessage(`${newName} added to phonebook`)
           setTimeout(() => {
             setInfoMessage(null)
-          }, 5000)
-        })
-    }
+          }, 5000)})
+          .catch(error => {
+            console.log("error data", error.response.data)
+            setErrorMessage(JSON.stringify(error.response.data))
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
+    })}
     else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
       const updatePerson = persons.find(obj => obj.name === newName)
       const updatedPerson = {...updatePerson, number: newNumber}
@@ -87,9 +92,13 @@ const App = () => {
             setInfoMessage(`${newName}'s number updated`)
             setTimeout(() => {
               setInfoMessage(null)
-            }, 5000)
-          })
-    }
+            }, 5000)})
+            .catch(error => {
+              setErrorMessage(error.response.data)
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 5000)
+    })}
     setNewName('')
     setNewNumber('')
     setFilter('')

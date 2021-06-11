@@ -1,21 +1,18 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+.env
+
 # dependencies
-/part_1/kurssitiedot/node_modules/
-/part_1/unicafe/node_modules/
-/part_1/anekdootit/node_modules/
-/part_4/blogilista/node_modules/
-/part_3/puhelinluettelo_backend/node_modules
 /node_modules
+/backend/node_modules
+/client/node_modules
 /.pnp
 .pnp.js
-.env
 
 # testing
 /coverage
 
 # production
-/build
 
 # misc
 .DS_Store
